@@ -1,6 +1,6 @@
 # bulk-scan-shared-infrastructure
 
-This module sets up the shared infrastructure for Bulk Scanning.
+This module sets up the shared infrastructure for Bulk Scanning.Also provides ability to run CCD locally in docker containers.
 
 ## Variables
 
@@ -27,3 +27,155 @@ The following parameters are optional
 ### Testing
 
 Changes to this project will be run against the preview environment if a PR is open and the PR is prefixed with [PREVIEW]
+
+### CCD Docker Setup
+#### Prerequisites
+
+* [Docker](https://www.docker.com/)
+
+#### Steps to start ccd management web
+Execute below script to start ccd locally.
+
+  ```bash
+  $ ./bin/start-ccd-web.sh
+  ```
+
+This will:
+- start ccd and and dependent services locally
+- mount database volumes, to which your data will persist between restarts,
+- expose container ports to the host, so all the APIs and databases will be directly accessible. Use `docker ps` or read the [compose file](./docker-compose.yml) to see how the ports are mapped.
+
+To stop the environment use the same script, just make sure to pass the `local` parameter:
+
+```bash
+$ ./bin/stop-environment.sh
+```
+  
+Once the containers are up, we can then create caseworker user to login into CCD. 
+
+By default `caseworker-sscs` role is assigned to the user.
+If you want to change the role pass in appropriate role while executing the script. User role should exists in Idam.
+
+  ```bash
+   $ ./bin/create-case-worker.sh
+  ```
+
+####  CCD definition
+
+In order to upload new definition file, put the definition file at location 
+`docker/ccd-definition-import/data/CCD_Definition_BULK_SCAN.template.xlsx`
+
+Make sure caseworker created in above step is configured in the UserProfile tab of the definition file and has correct roles.
+
+#### Uploading CCD definition
+
+```bash
+$ ./bin/upload-ccd-spreadsheet.sh
+```
+
+#### Debugging
+If an error occurs try running the script with a `-v` flag after the script name
+
+```bash
+$ ./bin/upload-ccd-spreadsheet.sh -v
+```
+#### Login into CCD
+Open management web page http://localhost:3451 and login with user created above
+
+### Publishing message to Service Bus Queue
+Azure does not provide emulator to spin up Service Bus Queue locally, hence you will have to always use an instance deployed on one of the environments(Sandbox, Demo or AAT)
+
+To publish message to queue follow below steps.
+
+* Make a curl request in below format.
+
+  ```bash
+  $ curl -X POST https://<namespace>-<env>.servicebus.windows.net/<entityPath>/messages -H "Authorization: <SharedAccessSignature>" -H "Content-Type:application/json" -d "{"envelopeId":"12344"}" -i
+  ```
+  
+_**namespace**_ : namespace of the service bus for e.g on AAT namespace would be `bulk-scan-servicebus-aat`
+
+_**entityPath**_ : name of the queue for e.g envelopes(this will not change with environment)
+
+_**SharedAccessSignature**_ : For details check [Service Bus SAS](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas)
+
+To generate Shared signature locally you can use below code snippet.
+
+```java
+import java.net.URLEncoder;
+import java.util.Base64;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+public class GetSASToken {
+
+    public static void main(String[] args) throws Exception {
+
+        String sas = getSASToken("<Service Bus URI>",
+            "<Key Name>",
+            "<Key Value>");
+
+        System.out.println(sas);
+    }
+
+    private static String getSASToken(String resourceUri, String keyName, String key) throws Exception {
+        long epoch = System.currentTimeMillis() / 1000L;
+        int week = 60 * 60 * 24 * 7;
+        String expiry = Long.toString(epoch + week);
+
+        String stringToSign = URLEncoder.encode(resourceUri, "UTF-8") + "\n" + expiry;
+        String signature = getHMAC256(key, stringToSign);
+        return "SharedAccessSignature sr=" + URLEncoder.encode(resourceUri, "UTF-8") + "&sig=" +
+            URLEncoder.encode(signature, "UTF-8") + "&se=" + expiry + "&skn=" + keyName;
+    }
+
+
+    public static String getHMAC256(String key, String input) throws Exception {
+        Mac sha256HMAC = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(), "HmacSHA256");
+        sha256HMAC.init(secretKey);
+        Base64.Encoder encoder = Base64.getEncoder();
+
+        return new String(encoder.encode(sha256HMAC.doFinal(input.getBytes("UTF-8"))));
+    }
+}
+```
+
+* **_Service Bus URI_** : URI of the service bus for e.g on AAT it will be `https://bulk-scan-servicebus-aat.servicebus.windows.net/`
+* **_Key name and Key Value_** : Needs to be retrieved from portal.
+Search for service bus namespace in portal and then navigate to the queue where message needs to be sent.
+Click on shared access policies and then select the policy(key for e.g SendSharedAccessKey) where claim is configured to have value Send. 
+
+#### Some nice things to know
+* Allocate enough memory to docker to spin up all the containers. 4 GB would be recommended.
+
+* You can pass flags while creating docker container for e.g to recreate all containers from scratch.
+
+  ```bash
+  $ ./bin/start-ccd-web.sh --force-recreate
+  ```
+  
+* You can delete all containers by executing below command.
+
+ ```bash
+  $ docker rm $(docker ps -a -q)
+  ```
+  
+* You can remove all images by executing below command.
+
+ ```bash
+  $ docker rmi $(docker images -q)
+  ```
+  
+* To list all volumes created run below command.
+
+```bash
+  $ docker volume ls
+ ```
+  
+* In case you want to remove docker volumes to destroy database volume mount run below command.
+
+ ```bash
+  $ docker volume rm <volume name>
+  ```
+ 
