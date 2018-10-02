@@ -51,14 +51,23 @@ To stop the environment use the same script, just make sure to pass the `local` 
 $ ./bin/stop-environment.sh
 ```
   
-Once the containers are up, we can then create caseworker user to login into CCD. 
+Once the containers are up, we can then create a caseworker user to login into CCD. 
 
-By default `caseworker-sscs` role is assigned to the user.
-If you want to change the role pass in appropriate role while executing the script. User role should exists in Idam.
+The required user should have the `caseworker-bulkscan` role. This matches the CCD definition loaded at the next stage.
 
-  ```bash
-   $ ./bin/create-case-worker.sh
-  ```
+Using your favourite postgresql client connect to the idam database and run the `docker/ccd-definition-import/scripts/caseworker-bulkscan-idam.sql` 
+sql script using the following parameters 
+
+- url: `jdbc:postgresql://localhost:5432/idam`
+- username: `idam`
+- password: `idam`
+
+This creates a user for local development with the following credentials:
+
+- username: `bulkscan+ccd@gmail.com`
+- password: `Password12`
+
+**Note**: For AAT and Demo environments the password has already been created and is available from vault.
 
 ####  CCD definition
 
