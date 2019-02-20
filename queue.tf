@@ -16,6 +16,7 @@ module "envelopes-queue" {
   requires_duplicate_detection            = "true"
   duplicate_detection_history_time_window = "PT1H"
   lock_duration                           = "PT5M"
+  max_delivery_count                      = "288"
 }
 
 module "notifications-queue" {
