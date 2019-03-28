@@ -4,19 +4,21 @@ module "bulk-scan-dlq-alert" {
   location          = "${azurerm_application_insights.appinsights.location}"
   app_insights_name = "${azurerm_application_insights.appinsights.name}"
 
-  enabled    = "${var.env != "prod"}"
-  alert_name = "Bulk_Scan_DLQ_-_BSP_${var.env}"
+  enabled    = "${var.env == "prod"}"
+  alert_name = "Bulk_Scan_DLQ_-_BSP"
   alert_desc = "Triggers when bulk scan services record at least one dead lettered message within a 15 minutes window timeframe."
 
   app_insights_query = <<EOF
 customEvents
 | where name == "DeadLetter"
 | extend dimensions = parse_json(customDimensions)
+| extend measurements = parse_json(customMeasurements)
 | project timestamp,
           reason = dimensions.reason,
           description = dimensions.description,
           messageId = dimensions.messageId,
-          queue = dimensions.queue
+          queue = dimensions.queue,
+          deliveryCount = measurements.deliveryCount
 EOF
 
   frequency_in_minutes       = 15
