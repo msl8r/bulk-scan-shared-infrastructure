@@ -32,6 +32,7 @@ fi
 AZURE_ACCOUNT=`show_account`
 SUBSCRIPTION_ID=`echo "$AZURE_ACCOUNT" | jq -r '.id'`
 SUBSCRIPTION_NAME=`echo "$AZURE_ACCOUNT" | jq -r '.name'`
+ACCOUNT_EMAIL=`echo "$AZURE_ACCOUNT" | jq -r '.user.name'`
 
 if echo "$SUBSCRIPTION_NAME" | grep -v -e "^.*CNP-DEV$"; then
   read -p "Enter DEV subscription ID: " SUBSCRIPTION_ID
@@ -44,11 +45,22 @@ az acr login --name hmcts --subscription ${SUBSCRIPTION_ID}
 # Compose CCD Web
 #####################################################################################
 
-docker-compose -f docker-compose.yml up ${@} -d ccd-case-management-web \
-                                                dm-store \
-                                                ccd-api-gateway \
-                                                idam-api \
-                                                authentication-web \
-                                                smtp-server \
-                                                ccd-importer \
-                                                idam-importer
+echo "Starting docker containers..."
+
+docker-compose up -d
+
+while [[ `docker ps -a | grep starting | wc -l | awk '{$1=$1};1'` != "0" ]]
+do
+    echo "Waiting for "`docker ps -a | grep starting | wc -l | awk '{$1=$1};1'`" container(s) to start. Sleeping for 5 seconds..."
+    sleep 5
+done
+
+# for convenience, let's have personal caseworker account
+
+BIN_DIR=$(dirname "$0")
+
+${BIN_DIR}/create-case-worker.sh "$ACCOUNT_EMAIL" "Myself" "As A Caseworker"
+
+# in order to log in, we need user profiles present in the ccd
+
+${BIN_DIR}/create-ccd-user-profile.sh "$ACCOUNT_EMAIL"
