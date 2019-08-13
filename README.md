@@ -41,6 +41,7 @@ Changes to this project will be run against the preview environment if a PR is o
 ```
 
 #### Steps to start ccd management web
+
 Execute below script to start ccd locally.
 
   ```bash
@@ -56,7 +57,7 @@ This will:
 - start ccd and and dependent services locally
 - mount database volumes, to which your data will persist between restarts,
 - expose container ports to the host, so all the APIs and databases will be directly accessible. Use `docker ps` or read the [compose file](./docker-compose.yml) to see how the ports are mapped.
-- load the idam user and roles required
+- load the idam user, roles and services required
 - load the ccd definition
 - enable ccd caseworkers:
   - default (see below)
@@ -87,12 +88,15 @@ $ ./bin/upload-ccd-spreadsheet.sh
 ```
 
 #### Debugging
+
 If an error occurs try running the script with a `-v` flag after the script name
 
 ```bash
 $ ./bin/upload-ccd-spreadsheet.sh -v
 ```
+
 #### Login into CCD
+
 Open management web page http://localhost:3451 and login with user created above
 
 #### Troubleshooting docker setup
@@ -106,7 +110,7 @@ In all occasions never experienced a failure afterwards
 
 ##### CCD Web is up and running, but cannot log in
 
-There can be multiple reasons including core breaking changes introduced by services enlisted in `docker-compose.yml` file.
+There can be multiple reasons including core breaking changes introduced by services enlisted in `docker-compose config --servives`.
 
 First course of action is to check whether CCD definition got imported successfully as it is creating user profiles which are mandatory for login
 
@@ -117,6 +121,7 @@ The following are suggestions of possible culprits:
 - check configuration/environment variables
 
 ### Publishing message to Service Bus Queue
+
 Azure does not provide emulator to spin up Service Bus Queue locally, hence you will have to always use an instance deployed on one of the environments(Sandbox, Demo or AAT)
 
 To publish message to queue follow below steps.
@@ -181,7 +186,8 @@ Search for service bus namespace in portal and then navigate to the queue where 
 Click on shared access policies and then select the policy(key for e.g SendSharedAccessKey) where claim is configured to have value Send. 
 
 #### Some nice things to know
-* Allocate enough memory to docker to spin up all the containers. 4 GB would be recommended.
+
+* Allocate enough memory to docker to spin up all the containers. 6 GB would be recommended - transition to sidam made sure enough RAM will be consumed.
 
 * You can pass flags while creating docker container for e.g to recreate all containers from scratch.
 
@@ -212,4 +218,3 @@ Click on shared access policies and then select the policy(key for e.g SendShare
  ```bash
   $ docker volume rm <volume name>
   ```
- 
