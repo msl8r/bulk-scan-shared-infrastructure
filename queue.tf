@@ -26,6 +26,8 @@ module "notifications-queue" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   lock_duration       = "PT5M"
   max_delivery_count  = "${var.notification_queue_max_delivery_count}"
+
+  duplicate_detection_history_time_window = "PT15M"
 }
 
 module "processed-envelopes-queue" {
