@@ -8,6 +8,7 @@ data "azurerm_key_vault_secret" "cert" {
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
+
 module "appGw" {
   source            = "git@github.com:hmcts/cnp-module-waf?ref=CHG5001024"
   env               = "${var.env}"
