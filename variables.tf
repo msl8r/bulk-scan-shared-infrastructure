@@ -51,7 +51,12 @@ variable "payment_queue_max_delivery_count" {
   description = "Payment queue message max delivery counter. Extracted to variable so it can be overridden per environment."
 }
 variable "external_cert_name" {}
-variable "external_hostname" {}
+
+variable "external_hostname" {
+  type        = "string"
+  default     = "platform.hmcts.net"
+  description = "Ending of hostname. Subdomains will be resolved in declaration of locals"
+}
 
 variable "managed_identity_object_id" {
   default = ""
