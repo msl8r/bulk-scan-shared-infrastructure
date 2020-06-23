@@ -3,7 +3,7 @@ locals {
 }
 
 module "envelopes-staging-queue" {
-  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=master"
+  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=feature/add-count-input-variable"
   name                = "envelopes-staging"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
@@ -12,18 +12,20 @@ module "envelopes-staging-queue" {
   duplicate_detection_history_time_window = "PT59M"
   lock_duration                           = "PT5M"
   max_delivery_count                      = "${var.envelope_queue_max_delivery_count}"
+  count = "${local.staging_resource_count}"
 }
 
 module "processed-envelopes-staging-queue" {
-  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=master"
+  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=feature/add-count-input-variable"
   name                = "processed-envelopes-staging"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   lock_duration       = "PT5M"
+  count = "${local.staging_resource_count}"
 }
 
 module "payments-staging-queue" {
-  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=master"
+  source              = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=feature/add-count-input-variable"
   name                = "payments-staging"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
@@ -31,6 +33,7 @@ module "payments-staging-queue" {
   max_delivery_count  = "${var.payment_queue_max_delivery_count}"
 
   duplicate_detection_history_time_window = "PT15M"
+  count = "${local.staging_resource_count}"
 }
 
 # region connection strings and other shared queue information as Key Vault secrets
