@@ -1,15 +1,3 @@
-locals {
-  scan_storage_vnet_name           = "${var.env == "aat" ? "scan-storage-vnet-aat" : "core-infra-vnet-${var.env}"}"
-  scan_storage_vnet_resource_group = "core-infra-${var.env}"
-  scan_storage_vnet_subnet_name    = "scan-storage"
-}
-
-data "azurerm_subnet" "scan_storage_subnet" {
-  name                 = "${local.scan_storage_vnet_subnet_name}"
-  virtual_network_name = "${local.scan_storage_vnet_name}"
-  resource_group_name  = "${local.scan_storage_vnet_resource_group}"
-}
-
 resource "azurerm_template_deployment" "private_endpoint_staging" {
   name                = "${local.account_name}staging-endpoint"
   resource_group_name = "${azurerm_resource_group.rg.name}"
