@@ -81,13 +81,13 @@ resource "azurerm_storage_container" "service_rejected_containers" {
 resource "azurerm_key_vault_secret" "storage_account_name" {
   name      = "storage-account-name"
   value     = "${azurerm_storage_account.storage_account.name}"
-  vault_uri = "${data.azurerm_key_vault.key_vault.vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_primary_key" {
   name      = "storage-account-primary-key"
   value     = "${azurerm_storage_account.storage_account.primary_access_key}"
-  vault_uri = "${data.azurerm_key_vault.key_vault.vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
 
 # this secret is used by blob-router-service for uploading blobs
