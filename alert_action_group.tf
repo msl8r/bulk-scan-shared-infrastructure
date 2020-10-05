@@ -18,7 +18,7 @@ module "alert-action-group" {
 resource "azurerm_key_vault_secret" "alert_action_group_name" {
   name = "alert-action-group-name"
   value = "${module.alert-action-group.action_group_name}"
-  vault_uri = "${data.azurerm_key_vault.key_vault.vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
 
 output "action_group_name" {
