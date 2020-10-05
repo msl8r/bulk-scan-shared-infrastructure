@@ -17,12 +17,12 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
 
 data "azurerm_key_vault_secret" "aks00_public_ip_prefix" {
   name         = "nsg-aks00-pip"
-  key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
+  key_vault_id = "${module.vault.key_vault.id}"
 }
 
 data "azurerm_key_vault_secret" "aks01_public_ip_prefix" {
   name         = "nsg-aks01-pip"
-  key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
+  key_vault_id = "${module.vault.key_vault.id}"
 }
 
 resource "azurerm_network_security_group" "bulkscannsg" {
