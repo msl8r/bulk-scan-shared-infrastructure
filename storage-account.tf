@@ -66,14 +66,12 @@ resource "azurerm_storage_account" "storage_account" {
 
 resource "azurerm_storage_container" "service_containers" {
   name                 = "${local.client_service_names[count.index]}"
-  resource_group_name  = "${azurerm_storage_account.storage_account.resource_group_name}"
   storage_account_name = "${azurerm_storage_account.storage_account.name}"
   count                = "${length(local.client_service_names)}"
 }
 
 resource "azurerm_storage_container" "service_rejected_containers" {
   name                 = "${local.client_service_names[count.index]}-rejected"
-  resource_group_name  = "${azurerm_storage_account.storage_account.resource_group_name}"
   storage_account_name = "${azurerm_storage_account.storage_account.name}"
   count                = "${length(local.client_service_names)}"
 }
