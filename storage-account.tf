@@ -94,7 +94,7 @@ resource "azurerm_key_vault_secret" "storage_account_primary_key" {
 resource "azurerm_key_vault_secret" "storage_account_connection_string" {
   name      = "storage-account-connection-string"
   value     = "${azurerm_storage_account.storage_account.primary_connection_string}"
-  vault_uri = "${data.azurerm_key_vault.key_vault.vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
 
 output "storage_account_name" {
