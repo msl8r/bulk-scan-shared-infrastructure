@@ -14,12 +14,6 @@ locals {
   client_service_names = ["bulkscanauto", "bulkscan", "sscs", "divorce", "probate", "finrem", "cmc", "publiclaw"]
 }
 
-data "azurerm_subnet" "trusted_subnet" {
-  name                 = "${local.trusted_vnet_subnet_name}"
-  virtual_network_name = "${local.trusted_vnet_name}"
-  resource_group_name  = "${local.trusted_vnet_resource_group}"
-}
-
 data "azurerm_subnet" "jenkins_subnet" {
   provider             = "azurerm.mgmt"
   name                 = "iaas"
