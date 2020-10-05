@@ -12,10 +12,10 @@ module "vault" {
   managed_identity_object_id = "${var.managed_identity_object_id}"
 }
 
-# data "azurerm_key_vault" "key_vault" {
-#   name                = "${module.vault.key_vault_name}"
-#   resource_group_name = "${azurerm_resource_group.rg.name}"
-# }
+data "azurerm_key_vault" "key_vault" {
+  name                = "${module.vault.key_vault_name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
+}
 
 output "vaultName" {
   value = "${module.vault.key_vault_name}"
