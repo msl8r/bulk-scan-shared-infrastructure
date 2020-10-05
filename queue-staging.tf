@@ -37,7 +37,7 @@ module "payments-staging-queue" {
 resource "azurerm_key_vault_secret" "envelopes_staging_queue_send_conn_str" {
   name      = "envelopes-staging-queue-send-connection-string"
   value     = "${module.envelopes-staging-queue.primary_send_connection_string}"
-  vault_uri = "${data.azurerm_key_vault.key_vault.vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
   count     = "${local.staging_resource_count}"
 }
 
