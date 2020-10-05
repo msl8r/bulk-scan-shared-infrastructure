@@ -1,6 +1,6 @@
 data "azurerm_key_vault_secret" "source_bsp_email_secret" {
   name      = "bulk-scan-alert-email"
-  vault_uri = "${module.vault.key_vault_uri}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
 
 module "alert-action-group" {
