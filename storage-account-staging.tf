@@ -1,6 +1,5 @@
 #TF Infra Approvals Doesn't support count on Modules, so have to stick with this on master branch.
 locals {
-  stage                    ="${var.env == "aat" ? "1": "0"}"
   external_hostname_suffix = "platform.hmcts.net"
   stripped_product_stg     = "${replace(var.product, "-", "")}"
   account_name_stg         = "${local.stripped_product_stg}${var.env}staging"
@@ -14,7 +13,6 @@ locals {
 }
 
 resource "azurerm_storage_account" "storage_account_staging" {
-  count               = "${var.env == "aat" ? "1": "0"}"
   name                = "${local.account_name_stg}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
