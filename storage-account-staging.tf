@@ -59,11 +59,16 @@ resource "azurerm_storage_account" "storage_account_staging" {
   tags = "${local.tags}"
 }
     
-module "storage_containers_stage" {
-#   count                = "${var.env == "aat" ? "1": "0"}"
-  source               = "git@github.com:hmcts/create-storage-containers?ref=master"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging[count.index]}"
-  client_service_names = "${local.client_service_names_stg}"
+resource "azurerm_storage_container" "service_containers_stg" {
+  name                 = "${local.client_service_names_stg[count.index]}"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging.*.name}"
+  count                = "${length(local.client_service_names_stg)}"
+}
+
+resource "azurerm_storage_container" "service_rejected_containers_stg" {
+  name                 = "${local.client_service_names_stg[count.index]}-rejected"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging.*.name}"
+  count                = "${length(local.client_service_names_stg)}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
