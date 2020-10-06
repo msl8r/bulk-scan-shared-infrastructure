@@ -1,5 +1,5 @@
+#TF Infra Approvals Doesn't support count on Modules, so have to stick with this on master branch.
 locals {
-  stage                    ="${var.env == "aat" ? "1": "0"}"
   external_hostname_suffix = "platform.hmcts.net"
   stripped_product_stg     = "${replace(var.product, "-", "")}"
   account_name_stg         = "${local.stripped_product_stg}${var.env}staging"
@@ -36,7 +36,6 @@ data "azurerm_subnet" "aks_01_subnet_stg" {
 }
 
 resource "azurerm_storage_account" "storage_account_staging" {
-  count               = "${var.env == "aat" ? "1": "0"}"
   name                = "${local.account_name_stg}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
@@ -72,16 +71,14 @@ resource "azurerm_storage_container" "service_rejected_containers_stg" {
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
-  count        = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-primary-key"
-  value        = "${azurerm_storage_account.storage_account_staging[count.index].primary_access_key}"
+  value        = "${azurerm_storage_account.storage_account_staging.primary_access_key}"
 }
 
 # this secret is used by blob-router-service for uploading blobs
 resource "azurerm_key_vault_secret" "storage_account_staging_connection_string" {
-  count        = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-connection-string"
-  value        = "${azurerm_storage_account.storage_account_staging[count.index].primary_connection_string}"
+  value        = "${azurerm_storage_account.storage_account_staging.primary_connection_string}"
 }
