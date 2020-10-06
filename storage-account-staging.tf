@@ -62,7 +62,7 @@ resource "azurerm_storage_account" "storage_account_staging" {
 module "storage_containers_stage" {
   count               = "${var.env == "aat" ? "1": "0"}"
   source              = "./storage-containers"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging[count.index]"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[count.index]}"
   client_service_names = "${local.client_service_names_stg}"
 }
 
