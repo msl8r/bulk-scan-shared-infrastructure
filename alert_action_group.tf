@@ -1,3 +1,8 @@
+data "azurerm_key_vault_secret" "source_reform_scan_email_secret" {
+  name      = "reform-scan-alert-email"
+  key_vault_id = "${module.vault.key_vault_id}"
+}
+
 module "alert-action-group" {
   source   = "git@github.com:hmcts/cnp-module-action-group"
   location = "global"
