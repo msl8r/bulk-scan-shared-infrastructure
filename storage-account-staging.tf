@@ -58,12 +58,12 @@ resource "azurerm_storage_account" "storage_account_staging" {
 
   tags = "${local.tags}"
 }
-
-resource "azurerm_key_vault_secret" "storage_account_staging_name" {
-  count        = local.stage
-  key_vault_id = "${module.vault.key_vault_id}"
-  name         = "storage-account-staging-name"
-  value        = "${azurerm_storage_account.storage_account_staging.*.name}"
+    
+module "storage_containers_stage" {
+  count               = "${var.env == "aat" ? "1": "0"}"
+  source              = "storage-containers"    
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[count.index]"
+  client_service_names = "${local.client_service_names_stg}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
