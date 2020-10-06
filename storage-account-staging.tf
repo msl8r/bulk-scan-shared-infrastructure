@@ -1,4 +1,5 @@
 locals {
+  stage                    ="${var.env == "aat" ? "1": "0"}"
   external_hostname_suffix = "platform.hmcts.net"
   stripped_product_stg     = "${replace(var.product, "-", "")}"
   account_name_stg         = "${local.stripped_product_stg}${var.env}staging"
