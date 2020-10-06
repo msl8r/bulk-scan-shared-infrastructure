@@ -1,5 +1,5 @@
-data "azurerm_key_vault_secret" "source_reform_scan_email_secret" {
-  name      = "reform-scan-alert-email"
+data "azurerm_key_vault_secret" "source_bulk_scan_email_secret" {
+  name      = "bulk-scan-alert-email"
   key_vault_id = "${module.vault.key_vault_id}"
 }
 
@@ -12,7 +12,7 @@ module "alert-action-group" {
   action_group_name      = "BSP Alert (${var.env})"
   short_name             = "BSP_alert"
   email_receiver_name    = "BSP Alerts And Monitoring"
-  email_receiver_address = "${data.azurerm_key_vault_secret.source_bsp_email_secret.value}"
+  email_receiver_address = "${data.azurerm_key_vault_secret.source_bulk_scan_email_secret.value}"
 }
 
 resource "azurerm_key_vault_secret" "alert_action_group_name" {
