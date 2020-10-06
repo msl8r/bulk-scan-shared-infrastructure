@@ -1,5 +1,6 @@
 locals {
-  external_hostname_suffix        = "platform.hmcts.net"
+  stage                    = "${var.env == "aat" ? "1": "0"}"
+  external_hostname_suffix = "platform.hmcts.net"
   stripped_product_stg     = "${replace(var.product, "-", "")}"
   account_name_stg         = "${local.stripped_product_stg}${var.env}staging"
   mgmt_network_name_stg    = "core-cftptl-intsvc-vnet"
@@ -35,7 +36,7 @@ data "azurerm_subnet" "aks_01_subnet_stg" {
 }
 
 resource "azurerm_storage_account" "storage_account_staging" {
-  count               = "${var.env == "aat" ? "1": "0"}"
+  for_each            = local.stage
   name                = "${local.account_name_stg}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
@@ -59,32 +60,37 @@ resource "azurerm_storage_account" "storage_account_staging" {
 }
 
 resource "azurerm_storage_container" "service_containers_stg" {
+  for_each             = local.stage
   name                 = "${local.client_service_names_stg[count.index]}"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[each.key].name}"
   count                = "${length(local.client_service_names_stg)}"
 }
 
 resource "azurerm_storage_container" "service_rejected_containers_stg" {
+  for_each             = local.stage
   name                 = "${local.client_service_names_stg[count.index]}-rejected"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[each.key].name}"
   count                = "${length(local.client_service_names_stg)}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_name" {
+  for_each     = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-name"
-  value        = "${azurerm_storage_account.storage_account_staging.name}"
+  value        = "${azurerm_storage_account.storage_account_staging[each.key].name}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
+  for_each     = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-primary-key"
-  value        = "${azurerm_storage_account.storage_account_staging.primary_access_key}"
+  value        = "${azurerm_storage_account.storage_account_staging[each.key].primary_access_key}"
 }
 
 # this secret is used by blob-router-service for uploading blobs
 resource "azurerm_key_vault_secret" "storage_account_staging_connection_string" {
+  for_each     = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-connection-string"
-  value        = "${azurerm_storage_account.storage_account_staging.primary_connection_string}"
+  value        = "${azurerm_storage_account.storage_account_staging[each.key].primary_connection_string}"
 }
