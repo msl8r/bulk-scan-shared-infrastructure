@@ -75,14 +75,14 @@ resource "azurerm_key_vault_secret" "storage_account_staging_name" {
   count        = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-name"
-  value        = "${azurerm_storage_account.storage_account_staging[each.key].name}"
+  value        = "${azurerm_storage_account.storage_account_staging.*.name}"
 }
 
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
   count        = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-primary-key"
-  value        = "${azurerm_storage_account.storage_account_staging[each.key].primary_access_key}"
+  value        = "${azurerm_storage_account.storage_account_staging.*.primary_access_key}"
 }
 
 # this secret is used by blob-router-service for uploading blobs
@@ -90,5 +90,5 @@ resource "azurerm_key_vault_secret" "storage_account_staging_connection_string" 
   count        = local.stage
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-connection-string"
-  value        = "${azurerm_storage_account.storage_account_staging[each.key].primary_connection_string}"
+  value        = "${azurerm_storage_account.storage_account_staging.*.primary_connection_string}"
 }
