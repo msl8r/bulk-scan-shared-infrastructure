@@ -2,7 +2,7 @@
 
 @Library("Infrastructure") _
 
-def product = 'bulk-scan'
+def product = 'bulk-scan-v2'
 
 env.KEEP_DIR_FOR_DEBUGGING = 'true'
 
