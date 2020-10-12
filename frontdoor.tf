@@ -72,3 +72,4 @@ resource "azurerm_frontdoor_firewall_policy" "wafpolicy" {
     type    = "DefaultRuleSet"
     version = "1.0"
   }
+}
