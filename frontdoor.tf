@@ -7,7 +7,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   routing_rule {
     name               = "storageRoutingRule"
     accepted_protocols = ["Http", "Https"]
-    patterns_to_match  = ["/*"]
+    patterns_to_match  = ["*"]
     frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
