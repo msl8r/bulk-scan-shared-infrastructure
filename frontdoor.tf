@@ -1,60 +1,45 @@
-resource "azurerm_frontdoor" "frontdoor" {
-  name                          = "${local.env_name}-frontdoor"
-  location                      = "global"
-  resource_group_name           = "${azurerm_resource_group.postfix-rg.name}"
+resource "azurerm_frontdoor" "example" {
+  name                                         = "${var.product}-${var.env}-frontdoor"
+  location                                     = "${var.location}"
+  resource_group_name                          = "${azurerm_resource_group.rg.name}"
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
-    name               = "routing-rule"
-    accepted_protocols = ["Https"]
+    name               = "exampleRoutingRule1"
+    accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
-    frontend_endpoints = ["ctsc-webform-endpoint"]
+    frontend_endpoints = ["exampleFrontendEndpoint1"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
-      backend_pool_name   = "backend-bulk-scan-${var.env"
-    }
-  }
-  
-  routing_rule {
-    name               = "http-redirect-rule"
-    accepted_protocols = ["Http"]
-    patterns_to_match  = ["/*"]
-    frontend_endpoints = ["bulk-scan-${var.env}-endpoint"]
-    redirect_configuration {
-      redirect_protocol = "HttpsOnly"
-      redirect_type = "Found"
+      backend_pool_name   = "exampleBackendBing"
     }
   }
 
   backend_pool_load_balancing {
-    name = "loadbalance-setting"
+    name = "exampleLoadBalancingSettings1"
   }
 
   backend_pool_health_probe {
-    name = "health-probe-setting"
+    name = "exampleHealthProbeSetting1"
   }
 
   backend_pool {
-    name = "backend-bulk-scan-${var.env}"
+    name = "exampleBackendBing"
     backend {
-      host_header = "${var.frontdoor_url}"
-      address     = "${var.frontdoor_url}"
+      host_header = "www.bing.com"
+      address     = "www.bing.com"
       http_port   = 80
       https_port  = 443
     }
 
-    load_balancing_name = "loadbalance-setting"
-    health_probe_name   = "health-probe-setting"
+    load_balancing_name = "exampleLoadBalancingSettings1"
+    health_probe_name   = "exampleHealthProbeSetting1"
   }
 
   frontend_endpoint {
-    name                              = "bulk-scan-${var.env}-endpoint"
-    host_name                         = "${var.frontdoor_url}"
-    custom_https_provisioning_enabled = true
-    web_application_firewall_policy_link_id = "${azurerm_frontdoor_firewall_policy.wafpolicy.id}"
-    custom_https_configuration {
-      certificate_source = "FrontDoor"
-    }
+    name                              = "exampleFrontendEndpoint1"
+    host_name                         = "example-FrontDoor.azurefd.net"
+    custom_https_provisioning_enabled = false
   }
 }
 
