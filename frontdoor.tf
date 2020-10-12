@@ -41,6 +41,12 @@ resource "azurerm_frontdoor" "frontdoor" {
     host_name                         = "${var.external_hostname}"
     custom_https_provisioning_enabled = false
   }
+  
+  frontend_endpoint {
+    name                              = "defaultFrontendEndpoint"
+    host_name                         = "${var.product}-${var.env}-FrontDoor.azurefd.net"
+    custom_https_provisioning_enabled = false
+  }
 }
 
 resource "azurerm_frontdoor_firewall_policy" "wafpolicy" {
