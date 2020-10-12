@@ -52,9 +52,9 @@ resource "azurerm_frontdoor" "frontdoor" {
 resource "azurerm_frontdoor_custom_https_configuration" "https_config" {
   frontend_endpoint_id              = azurerm_frontdoor.frontdoor.frontend_endpoint[0].id
   custom_https_provisioning_enabled = true
-
+  
   custom_https_configuration {
-    custom_https_configuration                 = "AzureKeyVault"
+    certificate_source                         = "AzureKeyVault"
     azure_key_vault_certificate_vault_id       = data.azurerm_key_vault.infra_vault.id
     azure_key_vault_certificate_secret_name    = "var.external_cert_name"
     azure_key_vault_certificate_secret_version = data.azurerm_key_vault_secret.cert.version  
