@@ -10,7 +10,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
-      forwarding_protocol = "MatchRequest"
+      forwarding_protocol = "HttpOnly"
       backend_pool_name   = "storageBackend"
     }
   }
@@ -29,6 +29,7 @@ resource "azurerm_frontdoor" "frontdoor" {
       host_header = "${var.external_hostname}"
       address     = "${var.frontdoor_backend}"
       http_port   = 80
+      https_port  = 443
     }
 
     load_balancing_name = "storageLoadBalancingSettings"
