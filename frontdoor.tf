@@ -10,7 +10,7 @@ resource "azurerm_frontdoor" "frontdoor" {
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
-      forwarding_protocol = "HttpOnly"
+      forwarding_protocol = "MatchRequest"
       backend_pool_name   = "storageBackend"
     }
   }
