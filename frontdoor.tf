@@ -1,44 +1,44 @@
-resource "azurerm_frontdoor" "example" {
+resource "azurerm_frontdoor" "frontdoor" {
   name                                         = "${var.product}-${var.env}-frontdoor"
   location                                     = "${var.location}"
   resource_group_name                          = "${azurerm_resource_group.rg.name}"
   enforce_backend_pools_certificate_name_check = false
 
   routing_rule {
-    name               = "exampleRoutingRule1"
+    name               = "storageRoutingRule"
     accepted_protocols = ["Http", "Https"]
     patterns_to_match  = ["/*"]
-    frontend_endpoints = ["exampleFrontendEndpoint1"]
+    frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
-      backend_pool_name   = "exampleBackendBing"
+      backend_pool_name   = "storageBackend"
     }
   }
 
   backend_pool_load_balancing {
-    name = "exampleLoadBalancingSettings1"
+    name = "storageLoadBalancingSettings"
   }
 
   backend_pool_health_probe {
-    name = "exampleHealthProbeSetting1"
+    name = "storageHealthProbeSetting"
   }
 
   backend_pool {
-    name = "exampleBackendBing"
+    name = "storageBackend"
     backend {
-      host_header = "www.bing.com"
-      address     = "www.bing.com"
+      host_header = "${var.frontdoor_backend}"
+      address     = "${var.frontdoor_backend}"
       http_port   = 80
       https_port  = 443
     }
 
-    load_balancing_name = "exampleLoadBalancingSettings1"
-    health_probe_name   = "exampleHealthProbeSetting1"
+    load_balancing_name = "storageLoadBalancingSettings"
+    health_probe_name   = "storageHealthProbeSetting"
   }
 
   frontend_endpoint {
-    name                              = "exampleFrontendEndpoint1"
-    host_name                         = "example-FrontDoor.azurefd.net"
+    name                              = "storageFrontendEndpoint"
+    host_name                         = "${var.external_hostname}"
     custom_https_provisioning_enabled = false
   }
 }
