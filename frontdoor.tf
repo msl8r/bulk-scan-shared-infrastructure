@@ -40,13 +40,13 @@ resource "azurerm_frontdoor" "frontdoor" {
     name                              = "storageFrontendEndpoint"
     host_name                         = "bulkscan.demo.platform.hmcts"
     custom_https_provisioning_enabled = true
-    
-    custom_https_configuration {
-      custom_https_configuration = "AzureKeyVault"
-      azure_key_vault_certificate_vault_id = data.azurerm_key_vault.infra_vault.id
-      azure_key_vault_certificate_secret_name = "${var.external_cert_name}"
-      azure_key_vault_certificate_secret_version = data.azurerm_key_vault_secret.cert.version  
-    }
+  }
+  
+  custom_https_configuration {
+    custom_https_configuration                 = "AzureKeyVault"
+    azure_key_vault_certificate_vault_id       = data.azurerm_key_vault.infra_vault.id
+    azure_key_vault_certificate_secret_name    = "var.external_cert_name"
+    azure_key_vault_certificate_secret_version = data.azurerm_key_vault_secret.cert.version  
   }
     
   frontend_endpoint {
