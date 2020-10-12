@@ -38,12 +38,6 @@ resource "azurerm_frontdoor" "frontdoor" {
 
   frontend_endpoint {
     name                              = "storageFrontendEndpoint"
-    host_name                         = "${var.external_hostname}"
-    custom_https_provisioning_enabled = false
-  }
-  
-  frontend_endpoint {
-    name                              = "defaultFrontendEndpoint"
     host_name                         = "${var.product}-${var.env}-FrontDoor.azurefd.net"
     custom_https_provisioning_enabled = false
   }
