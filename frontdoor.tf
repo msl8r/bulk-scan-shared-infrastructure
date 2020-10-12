@@ -50,7 +50,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 }
 
 resource "azurerm_frontdoor_custom_https_configuration" "https_config" {
-  frontend_endpoint_id              = azurerm_frontdoor.frontdoor.frontend_endpoint[0].id
+  frontend_endpoint_id              = azurerm_frontdoor.frontdoor.frontend_endpoint.id
   custom_https_provisioning_enabled = true
   
   custom_https_configuration {
