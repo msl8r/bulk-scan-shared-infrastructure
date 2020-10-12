@@ -64,7 +64,6 @@ data "azurerm_key_vault" "infra_vault" {
 
 data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_cert_name}"
-  name      = "${var.external_cert_name}"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
 
