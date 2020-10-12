@@ -6,7 +6,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 
   routing_rule {
     name               = "storageRoutingRule"
-    accepted_protocols = ["Http", "Https"]
+    accepted_protocols = ["Https"]
     patterns_to_match  = ["/*"]
     frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
@@ -29,7 +29,6 @@ resource "azurerm_frontdoor" "frontdoor" {
       host_header = "${var.external_hostname}"
       address     = "${var.frontdoor_backend}"
       http_port   = 80
-      https_port  = 443
     }
 
     load_balancing_name = "storageLoadBalancingSettings"
