@@ -7,7 +7,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   routing_rule {
     name               = "storageRoutingRule"
     accepted_protocols = ["Http", "Https"]
-    patterns_to_match  = ["*"]
+    patterns_to_match  = ["/*"]
     frontend_endpoints = ["storageFrontendEndpoint"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
@@ -26,7 +26,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   backend_pool {
     name = "storageBackend"
     backend {
-      host_header = "${var.frontdoor_backend}"
+      host_header = "${var.external_hostname}"
       address     = "${var.frontdoor_backend}"
       http_port   = 80
       https_port  = 443
@@ -38,7 +38,7 @@ resource "azurerm_frontdoor" "frontdoor" {
 
   frontend_endpoint {
     name                              = "storageFrontendEndpoint"
-    host_name                         = "bulkscan.demo.platform.hmcts"
+    host_name                         = "${var.external_hostname}"
     custom_https_provisioning_enabled = true
   }
  
