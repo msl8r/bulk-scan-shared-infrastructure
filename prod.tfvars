@@ -10,3 +10,4 @@ wafFileUploadLimit = "500"
 palo_cluster_size = "2"
 
 frontdoor_backend = "firewall-prod-int-palo-reformscanprod.uksouth.cloudapp.azure.com"
+stg_external_hostname = "bulkscanstg.platform.hmcts.net"
