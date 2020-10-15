@@ -65,19 +65,3 @@ data "azurerm_key_vault_secret" "cert" {
   name      = "${var.external_cert_name}"
   key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
 }
-
-resource "azurerm_frontdoor_firewall_policy" "wafpolicy" {
-  name                              = "bulkscan${replace(var.env, "-", "")}wafpolicy"
-  resource_group_name               = "${azurerm_resource_group.rg.name}"
-  enabled                           = true
-  mode                              = "Prevention"
-
-  managed_rule {
-    type    = "Microsoft_BotManagerRuleSet"
-    version = "1.0"
-  }
-  managed_rule {
-    type    = "DefaultRuleSet"
-    version = "1.0"
-  }
-}
