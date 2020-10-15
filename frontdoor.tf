@@ -73,7 +73,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   }
   
   frontend_endpoint {
-    name                              = "stageStorageFrontendEndpoint"
+    name                              = "stgStorageFrontendEndpoint"
     host_name                         = "v2-stg${var.external_hostname}"
     custom_https_provisioning_enabled = true
     custom_https_configuration {
