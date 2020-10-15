@@ -70,3 +70,9 @@ variable "palo_cluster_size" {
 variable "frontdoor_backend" {
   type        = "string"
 }
+
+variable "stg_frontdoor_backend" {
+  type        = "string"
+  default     = ""
+}  
+  
