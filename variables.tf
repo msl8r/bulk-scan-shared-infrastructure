@@ -74,5 +74,10 @@ variable "frontdoor_backend" {
 variable "stg_frontdoor_backend" {
   type        = "string"
   default     = ""
+}
+
+variable "stg_frontdoor_hostname" {
+  type        = "string"
+  default     = ""
 }  
   
