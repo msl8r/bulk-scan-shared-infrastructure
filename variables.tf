@@ -76,7 +76,7 @@ variable "stg_frontdoor_backend" {
   default     = ""
 }
 
-variable "stg_frontdoor_hostname" {
+variable "stg_external_hostname" {
   type        = "string"
   default     = ""
 }  
