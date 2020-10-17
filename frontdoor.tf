@@ -51,7 +51,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   backend_pool {
     name = "stgStorageBackend"
     backend {
-      host_header = "${azurerm_storage_account.stg_storage_account.primary_blob_host}"
+      host_header = "${azurerm_storage_account.storage_account_staging.primary_blob_host}"
       address     = "${var.stg_frontdoor_backend}"
       http_port   = 80
       https_port  = 443
