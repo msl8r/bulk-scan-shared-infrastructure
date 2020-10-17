@@ -4,6 +4,7 @@ provider "azurerm" {
 }
 
 locals {
+  product = "bulk-scan"
   tags = "${
     merge(
       var.common_tags,
