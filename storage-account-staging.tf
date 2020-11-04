@@ -70,6 +70,12 @@ resource "azurerm_storage_container" "service_rejected_containers_stg" {
   count                = "${length(local.client_service_names_stg)}"
 }
 
+resource "azurerm_key_vault_secret" "storage_account_staging_name" {
+  key_vault_id = "${module.vault.key_vault_id}"
+  name         = "storage-account-staging-name"
+  value        = "${azurerm_storage_account.storage_account_staging.name}"
+}
+
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-primary-key"
