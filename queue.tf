@@ -13,7 +13,7 @@ module "envelopes-queue" {
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
-  requires_duplicate_detection            =  true
+  requires_duplicate_detection            = "true"
   duplicate_detection_history_time_window = "PT59M"
   lock_duration                           = "PT5M"
   max_delivery_count                      = "${var.envelope_queue_max_delivery_count}"
