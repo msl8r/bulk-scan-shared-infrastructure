@@ -4,6 +4,8 @@
 
 def product = 'bulk-scan'
 
+env.KEEP_DIR_FOR_DEBUGGING = 'true'
+
 withInfraPipeline(product) {
 
   enableSlackNotifications('#bsp-build-notices')
