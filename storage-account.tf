@@ -6,33 +6,10 @@ provider "azurerm" {
 
 locals {
   account_name      = "${replace("${var.product}${var.env}", "-", "")}"
-  mgmt_network_name = "core-cftptl-intsvc-vnet"
-  mgmt_network_rg_name = "aks-infra-cftptl-intsvc-rg"
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by bulk-scan
   client_service_names = ["bulkscanauto", "bulkscan", "sscs", "divorce", "probate", "finrem", "cmc", "publiclaw"]
-}
-
-data "azurerm_subnet" "jenkins_subnet" {
-  provider             = "azurerm.mgmt"
-  name                 = "iaas"
-  virtual_network_name = "${local.mgmt_network_name}"
-  resource_group_name  = "${local.mgmt_network_rg_name}"
-}
-
-data "azurerm_subnet" "aks_00_subnet" {
-  provider             = "azurerm.mgmt"
-  name                 = "aks-00"
-  virtual_network_name = "${local.mgmt_network_name}"
-  resource_group_name  = "${local.mgmt_network_rg_name}"
-}
-
-data "azurerm_subnet" "aks_01_subnet" {
-  provider             = "azurerm.mgmt"
-  name                 = "aks-01"
-  virtual_network_name = "${local.mgmt_network_name}"
-  resource_group_name  = "${local.mgmt_network_rg_name}"
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -50,7 +27,13 @@ resource "azurerm_storage_account" "storage_account" {
 #   }
 
   network_rules {
-    virtual_network_subnet_ids = ["${data.azurerm_subnet.jenkins_subnet.id}", "${data.azurerm_subnet.aks_00_subnet.id}", "${data.azurerm_subnet.aks_01_subnet.id}"]
+    virtual_network_subnet_ids = [
+      data.azurerm_subnet.jenkins_subnet.id, 
+      data.azurerm_subnet.jenkins_aks_00.id, 
+      data.azurerm_subnet.jenkins_aks_01.id,
+      data.azurerm_subnet.app_aks_00_subnet.id,
+      data.azurerm_subnet.app_aks_01_subnet.id
+    ]
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
