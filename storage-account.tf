@@ -13,26 +13,18 @@ locals {
 
   resourcegroup_name          = "${azurerm_resource_group.rg.name}"
 
-  valid_subnets =  "${var.env == "aat"
-  ?
-  [
-    data.azurerm_subnet.jenkins_subnet.id,
-    data.azurerm_subnet.jenkins_aks_00.id,
-    data.azurerm_subnet.jenkins_aks_01.id,
-    data.azurerm_subnet.app_aks_00_subnet.id,
-    data.azurerm_subnet.app_aks_01_subnet.id,
-    data.azurerm_subnet.preview_aks_00_subnet.id,
-    data.azurerm_subnet.preview_aks_01_subnet.id,
-  ]
-  :
-  [
+  valid_subnets =   [
     data.azurerm_subnet.jenkins_subnet.id,
     data.azurerm_subnet.jenkins_aks_00.id,
     data.azurerm_subnet.jenkins_aks_01.id,
     data.azurerm_subnet.app_aks_00_subnet.id,
     data.azurerm_subnet.app_aks_01_subnet.id
   ]
- }"
+
+  preview_subnets ="${var.env == "aat" ? [data.azurerm_subnet.preview_aks_00_subnet.id, data.azurerm_subnet.preview_aks_01_subnet.id] : []}"
+
+  all_valid_subnets =  concat(valid_subnets, preview_subnets)
+
 }
 
 resource "azurerm_storage_account" "storage_account" {
