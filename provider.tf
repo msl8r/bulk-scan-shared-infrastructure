@@ -13,3 +13,9 @@ provider "azurerm" {
   alias = "aks"
   subscription_id = var.aks_subscription_id
 }
+
+provider "azurerm" {
+  features {}
+  alias = "aks_preview"
+  subscription_id = "8b6ea922-0862-443e-af15-6056e1c9b9a4"
+}

@@ -10,6 +10,21 @@ locals {
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by bulk-scan
   client_service_names = ["bulkscanauto", "bulkscan", "sscs", "divorce", "probate", "finrem", "cmc", "publiclaw"]
+
+  resourcegroup_name          = "${azurerm_resource_group.rg.name}"
+
+  valid_subnets =   [
+    data.azurerm_subnet.jenkins_subnet.id,
+    data.azurerm_subnet.jenkins_aks_00.id,
+    data.azurerm_subnet.jenkins_aks_01.id,
+    data.azurerm_subnet.app_aks_00_subnet.id,
+    data.azurerm_subnet.app_aks_01_subnet.id
+  ]
+
+  preview_subnets = var.env == "aat" ? [data.azurerm_subnet.preview_aks_00_subnet.id, data.azurerm_subnet.preview_aks_01_subnet.id] : []
+
+  all_valid_subnets =  concat(local.valid_subnets, local.preview_subnets)
+
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -27,13 +42,7 @@ resource "azurerm_storage_account" "storage_account" {
 #   }
 
   network_rules {
-    virtual_network_subnet_ids = [
-      data.azurerm_subnet.jenkins_subnet.id, 
-      data.azurerm_subnet.jenkins_aks_00.id, 
-      data.azurerm_subnet.jenkins_aks_01.id,
-      data.azurerm_subnet.app_aks_00_subnet.id,
-      data.azurerm_subnet.app_aks_01_subnet.id
-    ]
+    virtual_network_subnet_ids = local.valid_subnets
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
