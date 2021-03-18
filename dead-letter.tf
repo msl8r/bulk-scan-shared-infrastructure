@@ -9,19 +9,8 @@ module "bulk-scan-pay-alert" {
   alert_desc = "Triggers when bulk scan payment services record at least one dead lettered message within a 15 minutes window timeframe."
 
   app_insights_query = <<EOF
-customEvents
-| where name == "Payment"
-| extend dimensions = parse_json(customDimensions)
-| extend measurements = parse_json(customMeasurements)
-| project timestamp,
-          reason = dimensions.reason,
-          description = dimensions.description,
-          messageId = dimensions.messageId,
-          envelopeId = dimensions.envelopeId,
-          jurisdiction = dimensions.jurisdiction,
-          exceptionRecordRef = dimensions.exceptionRecordRef,
-          ccdCaseNumber = dimensions.ccdCaseNumber,
-          deliveryCount = measurements.deliveryCount
+exceptions
+| where message contains "dead-letter"
 EOF
 
   frequency_in_minutes       = 15
