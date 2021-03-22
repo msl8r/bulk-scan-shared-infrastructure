@@ -9,8 +9,8 @@ module "bulk-scan-dead-letter-alert" {
   alert_desc = "Triggers when bulk scan services record at least one dead lettered message within a 15 minutes window timeframe."
 
   app_insights_query = <<EOF
-exceptions
-| where message contains "dead-letter"
+union exceptions, traces
+| where * contains "dead-letter"
 EOF
 
   frequency_in_minutes       = 15
