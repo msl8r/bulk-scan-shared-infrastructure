@@ -15,7 +15,7 @@ module "envelopes-queue" {
 
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
-  lock_duration                           = "PT5M"
+  lock_duration                           = "PT20M"
   max_delivery_count                      = "${var.envelope_queue_max_delivery_count}"
 }
 
@@ -26,7 +26,7 @@ module "processed-envelopes-queue" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
-  lock_duration       = "PT5M"
+  lock_duration       = "PT20M"
 }
 
 module "payments-queue" {
