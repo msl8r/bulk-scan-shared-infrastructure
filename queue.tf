@@ -15,7 +15,7 @@ module "envelopes-queue" {
 
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
-  lock_duration                           = "PT20M"
+  lock_duration                           = "PT5M"
   max_delivery_count                      = "${var.envelope_queue_max_delivery_count}"
 }
 
@@ -26,7 +26,7 @@ module "processed-envelopes-queue" {
   resource_group_name = "${azurerm_resource_group.rg.name}"
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
-  lock_duration       = "PT20M"
+  lock_duration       = "PT35M"
 }
 
 module "payments-queue" {
@@ -34,7 +34,7 @@ module "payments-queue" {
   name                = "payments"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  lock_duration       = "PT5M"
+  lock_duration       = "PT35M"
   max_delivery_count  = "${var.payment_queue_max_delivery_count}"
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
