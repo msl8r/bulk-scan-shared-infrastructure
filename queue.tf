@@ -24,7 +24,9 @@ module "processed-envelopes-queue" {
   name                = "processed-envelopes"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  lock_duration       = "PT5M"
+  requires_duplicate_detection            =  true
+  duplicate_detection_history_time_window = "PT59M"
+  lock_duration       = "PT30M"
 }
 
 module "payments-queue" {
@@ -32,10 +34,10 @@ module "payments-queue" {
   name                = "payments"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  lock_duration       = "PT5M"
+  lock_duration       = "PT30M"
   max_delivery_count  = "${var.payment_queue_max_delivery_count}"
-
-  duplicate_detection_history_time_window = "PT15M"
+  requires_duplicate_detection            =  true
+  duplicate_detection_history_time_window = "PT59M"
 }
 
 # region shared access keys
