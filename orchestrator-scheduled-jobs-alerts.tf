@@ -7,7 +7,7 @@ module "consume-envelopes-queue-messages-alert" {
   alert_name = "Bulk_Scan_Consume_Envelopes_Queue_Messages_-_BSP"
   alert_desc = "Triggers when no logs from consume envelopes queue messages job found within timeframe."
 
-  app_insights_query = "traces | where message startswith 'Started consume-envelopes-queue job'"
+  app_insights_query = "traces | where message startswith 'Envelopes queue consume listener is working'"
 
   frequency_in_minutes       = 30
   time_window_in_minutes     = 30
