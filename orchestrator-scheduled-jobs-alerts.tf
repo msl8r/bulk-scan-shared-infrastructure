@@ -4,7 +4,7 @@ module "consume-envelopes-queue-messages-alert" {
   app_insights_name = "${azurerm_application_insights.appinsights.name}"
 
   enabled    = "${var.env == "prod"}"
-  alert_name = "Bulk_Scan_Check_Envelopes_Queue_Messages_-_BSP"
+  alert_name = "Bulk_Scan_Consume_Envelopes_Queue_Messages_-_BSP"
   alert_desc = "Triggers when envelopes queue is not working."
 
   app_insights_query = "traces | where message startswith 'Envelopes queue consume listener is working'"
