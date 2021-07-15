@@ -9,7 +9,7 @@ module "consume-envelopes-queue-messages-alert" {
 
   app_insights_query = "traces | where message startswith 'Envelopes queue consume listener is working'"
 
-  frequency_in_minutes       = 65
+  frequency_in_minutes       = 60
   time_window_in_minutes     = 65
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
