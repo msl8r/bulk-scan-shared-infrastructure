@@ -32,7 +32,9 @@ resource "azurerm_storage_account" "storage_account_staging" {
       data.azurerm_subnet.jenkins_aks_00.id, 
       data.azurerm_subnet.jenkins_aks_01.id,
       data.azurerm_subnet.app_aks_00_subnet.id, 
-      data.azurerm_subnet.app_aks_01_subnet.id
+      data.azurerm_subnet.app_aks_01_subnet.id,
+      data.azurerm_subnet.aat_cft_aks_00_subnet.id,
+      data.azurerm_subnet.aat_cft_aks_01_subnet.id
     ]
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
