@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 2.25"
+      version = "~> 2.49"
     }
     azuread = {
       source  = "hashicorp/azuread"
@@ -14,4 +14,9 @@ terraform {
       source = "hashicorp/random"
     }
   }
+}
+
+provider "azurerm" {
+  version = "~>2.49.0"
+  features {}
 }
