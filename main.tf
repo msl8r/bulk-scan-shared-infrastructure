@@ -3,14 +3,14 @@ provider "azurerm" {
   features {}
 }
 
-terraform {
-  required_providers {
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "1.6.0"
-    }
+
+required_providers {
+  azuread = {
+    source = "hashicorp/azuread"
+    version = "1.6.0"
   }
 }
+
 
 locals {
   product = "bulk-scan"
