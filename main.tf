@@ -1,3 +1,8 @@
+provider "azurerm" {
+  version = "=2.49.0"
+  features {}
+}
+
 locals {
   product = "bulk-scan"
   tags = "${
@@ -8,10 +13,6 @@ locals {
         "Team Name", "Bulk Scan"
       )
     )}"
-}
-
-provider "azurerm" {
-  features {}
 }
 
 resource "azurerm_resource_group" "rg" {
