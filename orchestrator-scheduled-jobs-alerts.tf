@@ -5,15 +5,15 @@ module "consume-envelopes-queue-messages-alert" {
 
   enabled    = "${var.env == "prod"}"
   alert_name = "Bulk_Scan_Consume_Envelopes_Queue_Messages_-_BSP"
-  alert_desc = "Triggers when envelopes queue is not working."
+  alert_desc = "Triggers when no logs from consume envelopes queue messages job found within timeframe."
 
-  app_insights_query = "traces | where message startswith 'Envelopes queue consume listener is working'"
+  app_insights_query = "traces | where message startswith 'Started consume-envelopes-queue job'"
 
-  frequency_in_minutes       = 60
-  time_window_in_minutes     = 65
+  frequency_in_minutes       = 30
+  time_window_in_minutes     = 30
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
-  custom_email_subject       = "Bulk Scan check-envelopes-queue alert"
+  custom_email_subject       = "Bulk Scan consume-envelopes-queue scheduled job alert"
   trigger_threshold_operator = "Equal"
   trigger_threshold          = 0
   resourcegroup_name         = "${azurerm_resource_group.rg.name}"
