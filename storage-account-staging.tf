@@ -9,7 +9,7 @@ locals {
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by bulk-scan
-  client_service_names_stg = ["bulkscanauto", "bulkscan", "sscs", "divorce", "probate", "finrem", "cmc"]
+  client_service_names_stg = ["bulkscanauto", "bulkscan", "sscs", "divorce", "nfd", "probate", "finrem", "cmc", "publiclaw", "privatelaw"]
 }
 
 resource "azurerm_storage_account" "storage_account_staging" {
@@ -19,7 +19,6 @@ resource "azurerm_storage_account" "storage_account_staging" {
   location                 = "${azurerm_resource_group.rg.location}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  account_kind             = "BlobStorage"
 
 #   custom_domain {
 #     name          = "${local.external_hostname_stg}"
