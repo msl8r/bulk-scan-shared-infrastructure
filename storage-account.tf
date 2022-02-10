@@ -24,7 +24,9 @@ locals {
 
   preview_subnets = var.env == "aat" ? [data.azurerm_subnet.preview_aks_00_subnet.id, data.azurerm_subnet.preview_aks_01_subnet.id] : []
 
-  all_valid_subnets =  concat(local.valid_subnets, local.preview_subnets)
+  cft_prod_subnets = var.env == "prod" ? [data.azurerm_subnet.prod_aks_00_subnet.id, data.azurerm_subnet.prod_aks_01_subnet.id] : []
+
+  all_valid_subnets =  concat(local.valid_subnets, local.preview_subnets, local.cft_prod_subnets)
 
 }
 
