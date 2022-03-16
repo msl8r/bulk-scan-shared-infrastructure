@@ -5,6 +5,8 @@ module "queue-namespace-premium" {
   resource_group_name = azurerm_resource_group.rg.name
   env                 = var.env
   sku                 = "Premium"
+  capacity            = 1
+  zoneRedundant      = true
   common_tags         = local.tags
 }
 
