@@ -3,10 +3,10 @@ module "bulk-scan-processor-liveness-alert" {
   location          = azurerm_application_insights.appinsights.location
   app_insights_name = azurerm_application_insights.appinsights.name
 
-  enabled    = var.env == "prod"
-  alert_name = "Bulk_Scan_Processor_liveness_-_BSP"
-  alert_desc = "Triggers when bulk scan processor looks like being down within a 30 minutes window timeframe."
-  common_tags= var.common_tags
+  enabled     = var.env == "prod"
+  alert_name  = "Bulk_Scan_Processor_liveness_-_BSP"
+  alert_desc  = "Triggers when bulk scan processor looks like being down within a 30 minutes window timeframe."
+  common_tags = var.common_tags
 
   app_insights_query = <<EOF
 requests
@@ -29,10 +29,10 @@ module "bulk-scan-payment-processor-liveness-alert" {
   location          = azurerm_application_insights.appinsights.location
   app_insights_name = azurerm_application_insights.appinsights.name
 
-  enabled    = var.env == "prod"
-  alert_name = "Bulk_Scan_Payment_Processor_liveness_-_BSP"
-  alert_desc = "Triggers when bulk scan payment processor looks like being down within a 30 minutes window timeframe."
-  common_tags= var.common_tags
+  enabled     = var.env == "prod"
+  alert_name  = "Bulk_Scan_Payment_Processor_liveness_-_BSP"
+  alert_desc  = "Triggers when bulk scan payment processor looks like being down within a 30 minutes window timeframe."
+  common_tags = var.common_tags
 
   app_insights_query = <<EOF
 requests
@@ -55,10 +55,10 @@ module "bulk-scan-orchestrator-liveness-alert" {
   location          = azurerm_application_insights.appinsights.location
   app_insights_name = azurerm_application_insights.appinsights.name
 
-  enabled    = var.env == "prod"
-  alert_name = "Bulk_Scan_Orchestrator_liveness_-_BSP"
-  alert_desc = "Triggers when bulk scan orchestrator looks like being down within a 30 minutes window timeframe."
-  common_tags= var.common_tags
+  enabled     = var.env == "prod"
+  alert_name  = "Bulk_Scan_Orchestrator_liveness_-_BSP"
+  alert_desc  = "Triggers when bulk scan orchestrator looks like being down within a 30 minutes window timeframe."
+  common_tags = var.common_tags
 
   app_insights_query = <<EOF
 requests

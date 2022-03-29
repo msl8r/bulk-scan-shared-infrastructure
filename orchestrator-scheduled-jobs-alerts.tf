@@ -8,7 +8,7 @@ module "consume-envelopes-queue-messages-alert" {
   alert_desc = "Triggers when envelopes queue is not working."
 
   app_insights_query = "traces | where message startswith 'Envelopes queue consume listener is working'"
-  common_tags= var.common_tags
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 60
   time_window_in_minutes     = 65
@@ -30,7 +30,7 @@ module "delete-messages-from-envelopes-dlq-alert" {
   alert_desc = "Triggers when no logs from delete messages from envelopes dlq job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started delete-envelopes-dlq-messages job'"
-  common_tags= var.common_tags
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 120
   time_window_in_minutes     = 180
