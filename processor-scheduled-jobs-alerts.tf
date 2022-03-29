@@ -8,6 +8,7 @@ module "blob-processing-alert" {
   alert_desc = "Triggers when no logs from blob processing job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started blob processing job'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 30
   time_window_in_minutes     = 30
@@ -29,6 +30,7 @@ module "upload-documents-alert" {
   alert_desc = "Triggers when no logs from upload documents job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started upload-documents job'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 30
   time_window_in_minutes     = 30
@@ -44,6 +46,7 @@ module "delete-rejected-files-alert" {
   source            = "git@github.com:hmcts/cnp-module-metric-alert"
   location          = azurerm_application_insights.appinsights.location
   app_insights_name = azurerm_application_insights.appinsights.name
+  common_tags       = var.common_tags
 
   enabled    = var.env == "prod"
   alert_name = "Bulk_Scan_Delete_Rejected_Files_-_BSP"
@@ -71,6 +74,7 @@ module "delete-complete-files-alert" {
   alert_desc = "Triggers when no logs from delete completed files job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started delete-complete-files job'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 120
   time_window_in_minutes     = 120
@@ -92,6 +96,7 @@ module "orchestrator-notifications-alert" {
   alert_desc = "Triggers when no logs from send-orchestrator-notification job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started send-orchestrator-notification job'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 30
   time_window_in_minutes     = 30
@@ -113,6 +118,7 @@ module "incomplete-envelopes-alert" {
   alert_desc = "Triggers when no logs from incomplete-envelopes-monitoring job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started incomplete-envelopes-monitoring job'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 120
   time_window_in_minutes     = 120
