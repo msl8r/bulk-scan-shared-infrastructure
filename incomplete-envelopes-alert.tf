@@ -6,6 +6,7 @@ module "bulk-scan-incomplete-envelopes-alert" {
   enabled    = var.env == "prod"
   alert_name = "Bulk_Scan_incomplete_envelopes_-_BSP"
   alert_desc = "Triggers when bulk scan processor receives a log entry about having incomplete envelopes greater than 0"
+  common_tags= var.common_tags
 
   app_insights_query = <<EOF
 traces
