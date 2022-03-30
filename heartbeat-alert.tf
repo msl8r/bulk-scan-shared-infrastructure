@@ -8,6 +8,7 @@ module "envelopes-queue-heartbeat-alert" {
   alert_desc = "Triggers when orchestrator didn't read heatbeat message from the queue in withing timeframe."
 
   app_insights_query = "traces | where message startswith 'Heartbeat message received'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 25
   time_window_in_minutes     = 25

@@ -8,6 +8,7 @@ module "consume-payments-queue-alert" {
   alert_desc = "Triggers when consume payments queue listener log not found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Payments queue consume listener is working.'"
+  common_tags        = var.common_tags
 
   frequency_in_minutes       = 60
   time_window_in_minutes     = 60

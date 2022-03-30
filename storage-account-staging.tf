@@ -19,7 +19,6 @@ resource "azurerm_storage_account" "storage_account_staging" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
-  account_kind             = "BlobStorage"
 
   #   custom_domain {
   #     name          = "${local.external_hostname_stg}"
