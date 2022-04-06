@@ -1,6 +1,6 @@
 module "queue-namespace-premium" {
   providers = {
-    azurerm.private-endpoint = azurerm.aks
+    azurerm.private_endpoint = azurerm.aks
   }
 
   source              = "git@github.com:hmcts/terraform-module-servicebus-namespace?ref=master"
